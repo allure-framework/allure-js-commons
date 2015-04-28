@@ -1,0 +1,20 @@
+{
+  "name": "allure-js-commons",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {
+    "fs-extra": "^0.18.2",
+    "js2xmlparser": "^0.1.9",
+    "jsontoxml": "0.0.11",
+    "jstoxml": "^0.2.3",
+    "lodash": "^3.7.0",
+    "node-uuid": "^1.4.3"
+  }
+}
