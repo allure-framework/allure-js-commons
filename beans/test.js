@@ -5,23 +5,26 @@ function Test(name, timestamp) {
     this.attachments = [];
     this.labels = [];
 }
-Test.prototype.setDesctiption = function(description) {
+Test.prototype.setDesctiption = function (description) {
     this.description = description;
 };
-Test.prototype.addLabel = function(name, value) {
+Test.prototype.addLabel = function (name, value) {
     this.labels.push({name: name, value: value});
 };
-Test.prototype.end = function(status, error, timestamp) {
+Test.prototype.addStep = function (step) {
+    this.steps.push(step)
+};
+Test.prototype.end = function (status, error, timestamp) {
     this.stop = timestamp || Date.now();
     this.status = status;
-    if(error) {
+    if (error) {
         this.failure = {
             message: error.message,
             'stack-trace': error.stack
         };
     }
 };
-Test.prototype.toXML = function() {
+Test.prototype.toXML = function () {
     var result = {
         '@': {
             start: this.start,
@@ -31,9 +34,23 @@ Test.prototype.toXML = function() {
         name: this.name,
         title: this.name,
         description: this.description,
-        labels: this.labels
+        labels: {
+            label: this.labels.map(function (label) {
+                return {
+                    '@': {
+                        name: label.name,
+                        value: label.value
+                    }
+                }
+            })
+        },
+        steps: {
+            step: this.steps.map(function (step) {
+                return step.toXML();
+            })
+        }
     };
-    if(this.failure) {
+    if (this.failure) {
         result.failure = this.failure;
     }
     return result;

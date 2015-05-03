@@ -1,6 +1,7 @@
 var _ = require('lodash'),
     Suite = require('./beans/suite'),
     Test = require('./beans/test'),
+    Step = require('./beans/step'),
     writer = require('./writer');
 
 function Allure(options) {
@@ -29,6 +30,7 @@ Allure.prototype.startCase = function(suiteName, testName, timestamp) {
     var test = new Test(testName, timestamp),
         suite = this.getSuite(suiteName);
     suite.currentTest = test;
+    suite.currentStep = test;
     suite.addTest(test);
 };
 
@@ -38,6 +40,19 @@ Allure.prototype.endCase = function(suiteName, testName, status, err, timestamp)
     suite.currentTest = null;
 };
 
+Allure.prototype.startStep = function(suiteName, stepName, timestamp) {
+    var suite = this.getSuite(suiteName),
+        step = new Step(stepName, timestamp);
+    step.parent = suite.currentStep;
+    suite.currentStep.addStep(step);
+    suite.currentStep = step;
+};
+
+Allure.prototype.endStep = function(suiteName, stepName, status, timestamp) {
+    var suite = this.getSuite(suiteName);
+    suite.currentStep.end(status, timestamp);
+    suite.currentStep = suite.currentStep.parent;
+};
 
 Allure.prototype.pendingCase = function(suiteName, testName, timestamp) {
     this.startCase(suiteName, testName, timestamp);
