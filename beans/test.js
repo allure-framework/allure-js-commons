@@ -1,6 +1,6 @@
-function Test(name) {
+function Test(name, timestamp) {
     this.name = name;
-    this.start = Date.now();
+    this.start = timestamp || Date.now();
     this.steps = [];
     this.attachments = [];
     this.labels = [];
@@ -11,8 +11,8 @@ Test.prototype.setDesctiption = function(description) {
 Test.prototype.addLabel = function(name, value) {
     this.labels.push({name: name, value: value});
 };
-Test.prototype.end = function(status, error) {
-    this.stop = Date.now();
+Test.prototype.end = function(status, error, timestamp) {
+    this.stop = timestamp || Date.now();
     this.status = status;
     if(error) {
         this.failure = {

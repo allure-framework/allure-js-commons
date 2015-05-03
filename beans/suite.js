@@ -1,10 +1,10 @@
-function Suite(name) {
+function Suite(name, timestamp) {
     this.name = name;
-    this.start = Date.now();
+    this.start = timestamp || Date.now();
     this.testcases = [];
 }
-Suite.prototype.end = function() {
-    this.stop = Date.now();
+Suite.prototype.end = function(timestamp) {
+    this.stop = timestamp || Date.now();
 };
 
 Suite.prototype.hasTests = function() {
