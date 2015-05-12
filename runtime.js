@@ -4,13 +4,12 @@ var Step = require('./beans/step'),
 var Allure = function() {
     this.flushReport();
     this._currentStep = null;
-    this.report = {};
 };
 
 Allure.prototype.createStep = function(name, stepFunc) {
     var allure = this;
     return function() {
-        var parentStep = currentStep,
+        var parentStep = allure._currentStep,
             status = 'passed',
             step = new Step(name);
         if(parentStep) {

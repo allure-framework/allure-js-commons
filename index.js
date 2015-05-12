@@ -37,6 +37,12 @@ Allure.prototype.startCase = function(suiteName, testName, timestamp) {
 
 Allure.prototype.endCase = function(suiteName, testName, status, err, timestamp) {
     var suite = this.getSuite(suiteName);
+    if(runtime.allure.report.steps.length) {
+        runtime.allure.report.steps.forEach(function(step) {
+            suite.currentTest.addStep(step);
+        });
+        runtime.allure.flushReport();
+    }
     suite.currentTest.end(status, err, timestamp);
     suite.currentTest = null;
 };
