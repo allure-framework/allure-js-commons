@@ -2,6 +2,7 @@ var _ = require('lodash'),
     Suite = require('./beans/suite'),
     Test = require('./beans/test'),
     Step = require('./beans/step'),
+    runtime = require('./runtime'),
     writer = require('./writer');
 
 function Allure(options) {
