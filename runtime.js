@@ -10,7 +10,7 @@ Allure.prototype.createStep = function(name, stepFunc) {
     var allure = this;
     return function() {
         for(var i = 0; i < arguments.length; i++) {
-            name.replace('{' + i + '}', arguments[i]);
+            name = name.replace('{' + i + '}', arguments[i]);
         }
         var parentStep = allure._currentStep,
             status = 'passed',
