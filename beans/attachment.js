@@ -1,20 +1,15 @@
 /**
  * Created by dolf on 12.05.15.
  */
-var fs = require("fs"),
-    mime = require("mime");
+var fs = require("fs");
 
-function Attachment(title, fn, type) {
+function Attachment(title, source, type) {
     this.title = title;
-    this.source = fn();
-    this.type = type || this.getType(this.source);
+    this.source = source;
+    this.type = type;
     this.size = this.getSize(this.source);
     this.attachments = [];
 }
-
-Attachment.prototype.getType = function(source) {
-    return mime.lookup(source);
-};
 
 Attachment.prototype.getSize = function(source) {
     var stats = fs.statSync(source);

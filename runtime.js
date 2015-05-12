@@ -1,5 +1,4 @@
-var Step = require('./beans/step'),
-    global = (function() { return this; })();
+var Step = require('./beans/step');
 
 var Allure = function() {
     this.flushReport();
