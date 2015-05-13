@@ -4,13 +4,16 @@ function Step(name, timestamp) {
     this.steps = [];
     this.attachments = [];
 }
+
 Step.prototype.addStep = function (step) {
     this.steps.push(step)
 };
+
 Step.prototype.end = function (status, timestamp) {
     this.status = status;
     this.stop = Date.now() || timestamp;
 };
+
 Step.prototype.toXML = function () {
     return {
         '@': {

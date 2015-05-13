@@ -2,8 +2,10 @@ var _ = require('lodash'),
     Suite = require('./beans/suite'),
     Test = require('./beans/test'),
     Step = require('./beans/step'),
+    Attachment = require('./beans/attachment'),
     runtime = require('./runtime'),
-    writer = require('./writer');
+    writer = require('./writer'),
+    fileType = require('file-type');
 
 function Allure(options) {
     this.options = _.defaults(options, {
@@ -53,6 +55,13 @@ Allure.prototype.endStep = function(suiteName, stepName, status, timestamp) {
     var suite = this.getSuite(suiteName);
     suite.currentStep.end(status, timestamp);
     suite.currentStep = suite.currentStep.parent;
+};
+
+Allure.prototype.addAttachment = function(suiteName, attachmentName, buffer) {
+    var suite = this.getSuite(suiteName),
+        file = writer.writeBuffer(this.options.targetDir, buffer),
+        attachment = new Attachment(attachmentName, file.source, buffer.length, file.mime);
+    suite.currentTest.addAttachment(attachment);
 };
 
 Allure.prototype.pendingCase = function(suiteName, testName, timestamp) {
