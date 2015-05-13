@@ -8,6 +8,8 @@ function Attachment(title, source, size, type) {
     this.attachments = [];
     if(source instanceof Buffer) {
         this.buffer = source;
+        this.size = source.length;
+        this.type = size;
     } else {
         this.source = source;
     }

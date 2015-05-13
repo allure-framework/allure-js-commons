@@ -56,9 +56,9 @@ Allure.prototype.endStep = function(suiteName, stepName, status, timestamp) {
     suite.currentStep = suite.currentStep.parent;
 };
 
-Allure.prototype.addAttachment = function(suiteName, attachmentName, buffer) {
+Allure.prototype.addAttachment = function(suiteName, attachmentName, buffer, type) {
     var suite = this.getSuite(suiteName),
-        file = writer.writeBuffer(this.options.targetDir, buffer),
+        file = writer.writeBuffer(this.options.targetDir, buffer, type),
         attachment = new Attachment(attachmentName, file.source, buffer.length, file.mime);
     suite.currentTest.addAttachment(attachment);
 };

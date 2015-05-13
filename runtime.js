@@ -36,14 +36,14 @@ Allure.prototype.createStep = function(name, stepFunc) {
     }
 };
 
-Allure.prototype.createAttachment = function(name, attachmentFunc) {
+Allure.prototype.createAttachment = function(name, attachmentFunc, type) {
     var allure = this;
     return function() {
         for(var i = 0; i < arguments.length; i++) {
             name = name.replace('{' + i + '}', arguments[i]);
         }
         var buffer = attachmentFunc.apply(this, arguments),
-            attachment = new Attachment(name, buffer);
+            attachment = new Attachment(name, buffer, type);
         allure.report.attachments.push(attachment);
     }
 };
