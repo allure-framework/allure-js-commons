@@ -60,7 +60,7 @@ Allure.prototype.endStep = function(suiteName, stepName, status, timestamp) {
 Allure.prototype.addAttachment = function(suiteName, attachmentName, buffer) {
     var suite = this.getSuite(suiteName),
         file = writer.writeBuffer(this.options.targetDir, buffer),
-        attachment = new Attachment(attachmentName, file.source, file.mime);
+        attachment = new Attachment(attachmentName, file.source, buffer.length, file.mime);
     suite.currentTest.addAttachment(attachment);
 };
 

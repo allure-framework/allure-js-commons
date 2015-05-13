@@ -1,4 +1,5 @@
-var Step = require('./beans/step');
+var Step = require('./beans/step'),
+    Attachment = require('./beans/attachment');
 
 var Allure = function() {
     this.flushReport();
@@ -35,6 +36,18 @@ Allure.prototype.createStep = function(name, stepFunc) {
     }
 };
 
+Allure.prototype.createAttachment = function(name, attachmentFunc) {
+    var allure = this;
+    return function() {
+        for(var i = 0; i < arguments.length; i++) {
+            name = name.replace('{' + i + '}', arguments[i]);
+        }
+        var buffer = attachmentFunc.apply(this, arguments),
+            attachment = new Attachment(name, buffer);
+        allure.report.attachments.push(attachment);
+    }
+};
+
 Allure.prototype.addLabel = function(key, value) {
     this.report.labels.push({
         key: key,
@@ -46,6 +59,7 @@ Allure.prototype.flushReport = function() {
     var report = this.report;
     this.report = {
         steps: [],
+        attachments: [],
         labels: []
     };
     return report;

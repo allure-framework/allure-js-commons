@@ -1,20 +1,17 @@
 /**
  * Created by dolf on 12.05.15.
  */
-var fs = require("fs");
-
-function Attachment(title, source, type) {
+function Attachment(title, source, size, type) {
     this.title = title;
-    this.source = source;
     this.type = type;
-    this.size = this.getSize(this.source);
+    this.size = size;
     this.attachments = [];
+    if(source instanceof Buffer) {
+        this.buffer = source;
+    } else {
+        this.source = source;
+    }
 }
-
-Attachment.prototype.getSize = function(source) {
-    var stats = fs.statSync(source);
-    return stats["size"];
-};
 
 Attachment.prototype.addAttachment = function(attachment) {
     this.attachments.push(attachment);
