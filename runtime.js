@@ -1,4 +1,5 @@
-var Step = require('./beans/step');
+var Step = require('./beans/step'),
+    Attachment = require('./beans/attachment');
 
 var Allure = function() {
     this.flushReport();
