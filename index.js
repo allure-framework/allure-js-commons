@@ -4,8 +4,7 @@ var _ = require('lodash'),
     Step = require('./beans/step'),
     Attachment = require('./beans/attachment'),
     runtime = require('./runtime'),
-    writer = require('./writer'),
-    fileType = require('file-type');
+    writer = require('./writer');
 
 function Allure(options) {
     this.options = _.defaults(options, {
