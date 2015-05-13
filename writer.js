@@ -22,7 +22,7 @@ module.exports = {
                 fileExtension = mime.extension(fileMime);
             }
         }
-        var fileName = uuid.v1() + '.' + fileExtension;
+        var fileName = uuid.v1() + '-attachment.' + fileExtension;
         fs.outputFileSync(path.join(targetDir, fileName), buffer);
         return {
             source: fileName,
