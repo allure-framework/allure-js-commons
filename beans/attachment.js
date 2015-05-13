@@ -2,7 +2,7 @@
  * Created by dolf on 12.05.15.
  */
 function Attachment(title, source, size, type) {
-    this.title = title;
+    this.name = this.title = title;
     this.type = type;
     this.size = size;
     this.attachments = [];
