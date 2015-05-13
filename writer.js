@@ -22,7 +22,7 @@ module.exports = {
                 fileExtension = mime.extension(fileMime);
             }
         }
-        var filePath = path.join(__dirname, targetDir, uuid.v1() + '.' + fileExtension);
+        var filePath = path.resolve(path.join(targetDir, uuid.v1() + '.' + fileExtension));
         fs.outputFileSync(filePath, buffer);
         return {
             source: filePath,
