@@ -3,7 +3,6 @@ var _ = require('lodash'),
     Test = require('./beans/test'),
     Step = require('./beans/step'),
     Attachment = require('./beans/attachment'),
-    runtime = require('./runtime'),
     writer = require('./writer');
 
 function Allure(options) {

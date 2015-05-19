@@ -5,7 +5,6 @@ function Attachment(title, source, size, type) {
     this.name = this.title = title;
     this.type = type;
     this.size = size;
-    this.attachments = [];
     if(source instanceof Buffer) {
         this.buffer = source;
         this.size = source.length;
@@ -15,10 +14,6 @@ function Attachment(title, source, size, type) {
     }
 }
 
-Attachment.prototype.addAttachment = function(attachment) {
-    this.attachments.push(attachment);
-};
-
 Attachment.prototype.toXML = function () {
     return {
         '@': {
@@ -26,11 +21,6 @@ Attachment.prototype.toXML = function () {
             source: this.source,
             type: this.type,
             size: this.size
-        },
-        attachments: {
-            attachment: this.attachments.map(function (attachment) {
-                return attachment.toXML();
-            })
         }
     }
 };

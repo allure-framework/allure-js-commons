@@ -1,26 +1,13 @@
-var Step = require('./beans/step'),
-    Attachment = require('./beans/attachment');
-
-var Allure = function() {
-    this.flushReport();
-    this._currentStep = null;
+var Allure = function(allure) {
+    this._allure;
 };
 
 Allure.prototype.createStep = function(name, stepFunc) {
-    var allure = this;
+    var that = this;
     return function() {
-        for(var i = 0; i < arguments.length; i++) {
-            name = name.replace('{' + i + '}', arguments[i]);
-        }
-        var parentStep = allure._currentStep,
-            status = 'passed',
-            step = new Step(name);
-        if(parentStep) {
-            parentStep.addStep(step);
-        } else {
-            allure.report.steps.push(step);
-        }
-        allure._currentStep = step;
+        var stepName = that._replace(name, arguments),
+            status = 'passed';
+        that._allure.startStep()
         try {
             var result = stepFunc.apply(this, arguments);
         }
@@ -48,23 +35,10 @@ Allure.prototype.createAttachment = function(name, attachmentFunc, type) {
     }
 };
 
-Allure.prototype.addLabel = function(key, value) {
-    this.report.labels.push({
-        key: key,
-        value: value
+Allure.prototype._replace = function(name, arr) {
+    return name.replace(/(\{(\d+)\})/gi, function(match, index){
+        return arr[index];
     });
 };
 
-Allure.prototype.flushReport = function() {
-    var report = this.report;
-    this.report = {
-        steps: [],
-        attachments: [],
-        labels: []
-    };
-    return report;
-};
-
-module.exports = {
-    allure: global.allure = new Allure()
-};
+module.exports = Allure;
