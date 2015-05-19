@@ -1,5 +1,5 @@
 var Allure = function(allure) {
-    this._allure;
+    this._allure = allure;
 };
 
 Allure.prototype.createStep = function(name, stepFunc) {
