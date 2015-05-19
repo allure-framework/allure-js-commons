@@ -1,17 +1,11 @@
 /**
  * Created by dolf on 12.05.15.
  */
-function Attachment(title, source, size, type) {
-    this.name = this.title = title;
-    this.type = type;
+function Attachment(title, source, size, mime) {
+    this.title = title;
+    this.type = mime;
     this.size = size;
-    if(source instanceof Buffer) {
-        this.buffer = source;
-        this.size = source.length;
-        this.type = size;
-    } else {
-        this.source = source;
-    }
+    this.source = source;
 }
 
 Attachment.prototype.toXML = function () {

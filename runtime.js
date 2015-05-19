@@ -5,9 +5,9 @@ var Allure = function(allure) {
 Allure.prototype.createStep = function(name, stepFunc) {
     var that = this;
     return function() {
-        var stepName = that._replace(name, arguments),
+        var stepName = that._replace(name, Array.prototype.slice(arguments)),
             status = 'passed';
-        that._allure.startStep()
+        that._allure.startStep(stepName);
         try {
             var result = stepFunc.apply(this, arguments);
         }
@@ -16,22 +16,18 @@ Allure.prototype.createStep = function(name, stepFunc) {
             throw error;
         }
         finally {
-            step.end(status);
-            allure._currentStep = parentStep;
+            that._allure.endStep(status);
         }
         return result;
     }
 };
 
 Allure.prototype.createAttachment = function(name, attachmentFunc, type) {
-    var allure = this;
+    var that = this;
     return function() {
-        for(var i = 0; i < arguments.length; i++) {
-            name = name.replace('{' + i + '}', arguments[i]);
-        }
-        var buffer = attachmentFunc.apply(this, arguments),
-            attachment = new Attachment(name, buffer, type);
-        allure.report.attachments.push(attachment);
+        var attachmentName = that._replace(name, Array.prototype.slice(arguments)),
+            buffer = attachmentFunc.apply(this, arguments);
+        that._allure.addAttachment(attachmentName, buffer, type);
     }
 };
 
