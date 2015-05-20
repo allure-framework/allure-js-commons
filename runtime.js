@@ -9,7 +9,7 @@ var Allure = function() {
 Allure.prototype.createStep = function(name, stepFunc) {
     var that = this;
     return function() {
-        var stepName = that._replace(name, Array.prototype.slice(arguments)),
+        var stepName = that._replace(name, Array.prototype.slice.call(arguments, 0)),
             status = 'passed';
         that._allure.startStep(stepName);
         try {
@@ -29,7 +29,7 @@ Allure.prototype.createStep = function(name, stepFunc) {
 Allure.prototype.createAttachment = function(name, attachmentFunc, type) {
     var that = this;
     return function() {
-        var attachmentName = that._replace(name, Array.prototype.slice(arguments)),
+        var attachmentName = that._replace(name, Array.prototype.slice.call(arguments, 0)),
             buffer = attachmentFunc.apply(this, arguments);
         that._allure.addAttachment(attachmentName, buffer, type);
     }
