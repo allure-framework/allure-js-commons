@@ -1,7 +1,9 @@
 var Allure = function() {
-    Object.defineProperty(this, '_allure', function() {
-        return global.allure;
-    });
+    Object.defineProperty(this, '_allure', {
+        get: function() {
+            return global.allure;
+        }
+    })
 };
 
 Allure.prototype.createStep = function(name, stepFunc) {
