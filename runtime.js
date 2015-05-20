@@ -36,7 +36,7 @@ Allure.prototype.createAttachment = function(name, attachmentFunc, type) {
 };
 
 Allure.prototype._replace = function(name, arr) {
-    return name.replace(/(\{(\d+)\})/gi, function(match, index){
+    return name.replace(/(\{(\d+)\})/gi, function(match, submatch, index) {
         return arr[index];
     });
 };
