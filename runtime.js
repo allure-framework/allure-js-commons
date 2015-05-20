@@ -1,5 +1,7 @@
-var Allure = function(allure) {
-    this._allure = allure;
+var Allure = function() {
+    Object.defineProperty(this, '_allure', function() {
+        return global.allure;
+    });
 };
 
 Allure.prototype.createStep = function(name, stepFunc) {
@@ -37,4 +39,4 @@ Allure.prototype._replace = function(name, arr) {
     });
 };
 
-module.exports = Allure;
+module.exports = new Allure();
