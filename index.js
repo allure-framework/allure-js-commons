@@ -10,13 +10,16 @@ function Allure(options) {
     this.options = _.defaults(options, {
         targetDir: 'allure-results'
     });
-    this.suite = null;
-    this.steps = [];
-    this.attachments = [];
-    this.currentStep = null;
+    this.suites = [];
+    var that = this;
+    Object.defineProperty(this, 'suite', {
+        get: function() {
+            return that.suites[0];
+        }
+    })
 }
 Allure.prototype.startSuite = function(suiteName, timestamp) {
-    this.suite = new Suite(suiteName, timestamp);
+    this.suites.unshift(new Suite(suiteName, timestamp));
 };
 
 Allure.prototype.endSuite = function(timestamp) {
@@ -24,30 +27,14 @@ Allure.prototype.endSuite = function(timestamp) {
     if(this.suite.hasTests()) {
         writer.writeSuite(this.options.targetDir, this.suite.toXML());
     }
-    this.suite = null;
+    this.suites.shift();
 };
 
 Allure.prototype.startCase = function(testName, timestamp) {
-    var test = new Test(testName, timestamp),
-        i = 0;
+    var test = new Test(testName, timestamp);
     this.suite.currentTest = test;
     this.suite.currentStep = test;
     this.suite.addTest(test);
-    if(this.steps.length) {
-        while(this.steps[i]) {
-            test.addStep(this.steps[i]);
-            i++
-        }
-        this.steps = [];
-    }
-    if(this.attachments.length) {
-        i = 0;
-        while(this.attachments[i]) {
-            test.addAttachment(attachments[i]);
-            i++;
-        }
-        this.attachments = [];
-    }
 };
 
 Allure.prototype.endCase = function(status, err, timestamp) {
@@ -57,36 +44,21 @@ Allure.prototype.endCase = function(status, err, timestamp) {
 
 Allure.prototype.startStep = function(stepName, timestamp) {
     var step = new Step(stepName, timestamp);
-    if(this.suite && this.suite.currentStep) {
-        step.parent = this.suite.currentStep;
-        this.suite.currentStep.addStep(step);
-        this.suite.currentStep = step;
-    } else {
-        step.parent = this.currentStep;
-        step.parent ? this.currentStep.addStep(step) : this.steps.push(step);
-        this.currentStep = step;
-    }
+    step.parent = this.suite.currentStep;
+    this.suite.currentStep.addStep(step);
+    this.suite.currentStep = step;
 };
 
 Allure.prototype.endStep = function(status, timestamp) {
-    if(this.suite && this.suite.currentStep) {
-        this.suite.currentStep.end(status, timestamp);
-        this.suite.currentStep = this.suite.currentStep.parent;
-    } else {
-        this.currentStep.end(status, timestamp);
-        this.currentStep = this.currentStep.parent;
-    }
+    this.suite.currentStep.end(status, timestamp);
+    this.suite.currentStep = this.suite.currentStep.parent;
 };
 
 Allure.prototype.addAttachment = function(attachmentName, buffer, type) {
     var info = util.getBufferInfo(buffer, type),
         name = writer.writeBuffer(this.options.targetDir, buffer, info.ext),
         attachment = new Attachment(attachmentName, name, buffer.length, info.mime);
-    if(this.suite && this.suite.currentTest) {
-        this.suite.currentTest.addAttachment(attachment);
-    } else {
-        this.attachments.push(attachment);
-    }
+    this.suite.currentTest.addAttachment(attachment);
 };
 
 Allure.prototype.pendingCase = function(testName, timestamp) {

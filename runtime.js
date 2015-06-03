@@ -1,4 +1,6 @@
-var Allure = function() {};
+var Allure = function(allure) {
+    this._allure = allure;
+};
 
 Allure.prototype.setAllure = function(allure) {
     this._allure = allure;
@@ -39,4 +41,4 @@ Allure.prototype._replace = function(name, arr) {
     });
 };
 
-module.exports = global.allure = new Allure();
+module.exports = Allure;
