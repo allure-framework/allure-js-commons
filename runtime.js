@@ -2,10 +2,6 @@ var Allure = function(allure) {
     this._allure = allure;
 };
 
-Allure.prototype.setAllure = function(allure) {
-    this._allure = allure;
-};
-
 Allure.prototype.createStep = function(name, stepFunc) {
     var that = this;
     return function() {
