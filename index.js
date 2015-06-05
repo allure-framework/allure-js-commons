@@ -6,64 +6,70 @@ var _ = require('lodash'),
     util = require('./util'),
     writer = require('./writer');
 
-function Allure(options) {
+function Allure() {
+    this.suites = [];
+}
+Allure.prototype.setOptions = function(options) {
     this.options = _.defaults(options, {
         targetDir: 'allure-results'
     });
-    this.suites = [];
-    var that = this;
-    Object.defineProperty(this, 'suite', {
-        get: function() {
-            return that.suites[0];
-        }
-    })
-}
+};
+
+Allure.prototype.getCurrentSuite = function() {
+    return this.suites[0];
+};
+
 Allure.prototype.startSuite = function(suiteName, timestamp) {
     this.suites.unshift(new Suite(suiteName, timestamp));
 };
 
 Allure.prototype.endSuite = function(timestamp) {
-    this.suite.end(timestamp);
-    if(this.suite.hasTests()) {
-        writer.writeSuite(this.options.targetDir, this.suite.toXML());
+    var suite = this.getCurrentSuite();
+    suite.end(timestamp);
+    if(suite.hasTests()) {
+        writer.writeSuite(this.options.targetDir, suite.toXML());
     }
     this.suites.shift();
 };
 
 Allure.prototype.startCase = function(testName, timestamp) {
-    var test = new Test(testName, timestamp);
-    this.suite.currentTest = test;
-    this.suite.currentStep = test;
-    this.suite.addTest(test);
+    var test = new Test(testName, timestamp),
+        suite = this.getCurrentSuite();
+    suite.currentTest = test;
+    suite.currentStep = test;
+    suite.addTest(test);
 };
 
 Allure.prototype.endCase = function(status, err, timestamp) {
-    this.suite.currentTest.end(status, err, timestamp);
-    this.suite.currentTest = null;
+    var suite = this.getCurrentSuite();
+    suite.currentTest.end(status, err, timestamp);
+    suite.currentTest = null;
 };
 
 Allure.prototype.startStep = function(stepName, timestamp) {
-    var step = new Step(stepName, timestamp);
-    step.parent = this.suite.currentStep;
-    this.suite.currentStep.addStep(step);
-    this.suite.currentStep = step;
+    var step = new Step(stepName, timestamp),
+        suite = this.getCurrentSuite();
+    step.parent = suite.currentStep;
+    step.parent.addStep(step);
+    suite.currentStep = step;
 };
 
 Allure.prototype.endStep = function(status, timestamp) {
-    this.suite.currentStep.end(status, timestamp);
-    this.suite.currentStep = this.suite.currentStep.parent;
+    var suite = this.getCurrentSuite();
+    suite.currentStep.end(status, timestamp);
+    suite.currentStep = suite.currentStep.parent;
 };
 
 Allure.prototype.addAttachment = function(attachmentName, buffer, type) {
     var info = util.getBufferInfo(buffer, type),
         name = writer.writeBuffer(this.options.targetDir, buffer, info.ext),
         attachment = new Attachment(attachmentName, name, buffer.length, info.mime);
-    this.suite.currentTest.addAttachment(attachment);
+    this.getCurrentSuite().currentTest.addAttachment(attachment);
 };
 
 Allure.prototype.pendingCase = function(testName, timestamp) {
     this.startCase(testName, timestamp);
-    this.endCase(testName, 'pending', {message: 'Test ignored'}, timestamp);
+    this.endCase('pending', {message: 'Test ignored'}, timestamp);
 };
 
 module.exports = Allure;
