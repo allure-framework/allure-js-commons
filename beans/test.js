@@ -5,15 +5,23 @@ function Test(name, timestamp) {
     this.attachments = [];
     this.labels = [];
 }
+
 Test.prototype.setDesctiption = function (description) {
     this.description = description;
 };
+
 Test.prototype.addLabel = function (name, value) {
     this.labels.push({name: name, value: value});
 };
+
 Test.prototype.addStep = function (step) {
     this.steps.push(step)
 };
+
+Test.prototype.addAttachment = function (attachment) {
+    this.attachments.push(attachment)
+};
+
 Test.prototype.end = function (status, error, timestamp) {
     this.stop = timestamp || Date.now();
     this.status = status;
@@ -24,6 +32,7 @@ Test.prototype.end = function (status, error, timestamp) {
         };
     }
 };
+
 Test.prototype.toXML = function () {
     var result = {
         '@': {
@@ -47,6 +56,11 @@ Test.prototype.toXML = function () {
         steps: {
             step: this.steps.map(function (step) {
                 return step.toXML();
+            })
+        },
+        attachments: {
+            attachment: this.attachments.map(function (attachment) {
+                return attachment.toXML();
             })
         }
     };
