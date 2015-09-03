@@ -1,3 +1,4 @@
+var STATUSES = ['passed', 'pending', 'skipped', 'failed', 'broken'];
 function Test(name, timestamp) {
     this.name = name;
     this.start = timestamp || Date.now();
@@ -24,7 +25,9 @@ Test.prototype.addAttachment = function (attachment) {
 
 Test.prototype.end = function (status, error, timestamp) {
     this.stop = timestamp || Date.now();
-    this.status = status;
+    if(STATUSES.indexOf(status) > STATUSES.indexOf(this.status)) {
+        this.status = status;
+    }
     if (error) {
         this.failure = {
             message: error.message,
