@@ -1,6 +1,6 @@
 {
   "name": "allure-js-commons",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Common helper for writing plugins to allure-framework",
   "main": "index.js",
   "repository": "git@github.com:allure-framework/allure-js-commons.git",
