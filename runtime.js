@@ -3,21 +3,33 @@ var Allure = function(allure) {
     this._allure = allure;
 };
 
+Allure.prototype.isPromise = function(obj) {
+    return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
+};
+
 Allure.prototype.createStep = function(name, stepFunc) {
     var that = this;
     return function() {
         var stepName = that._format(name, Array.prototype.slice.call(arguments, 0)),
-            status = 'passed';
+            status = 'passed',
+            result;
         that._allure.startStep(stepName);
         try {
-            var result = stepFunc.apply(this, arguments);
+            result = stepFunc.apply(this, arguments);
         }
         catch(error) {
             status = 'broken';
             throw error;
         }
         finally {
-            that._allure.endStep(status);
+            if(that.isPromise(result)) {
+                result.then(
+                    that._allure.endStep.bind(that._allure, 'passed'),
+                    that._allure.endStep.bind(that._allure, 'broken')
+                 );
+            } else {
+                that._allure.endStep(status);
+            }
         }
         return result;
     };
