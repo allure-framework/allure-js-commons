@@ -66,6 +66,17 @@ describe('allure-runtime', function() {
         ]);
     });
 
+    it('should add attachments inside step', function() {
+        var stepFn = runtime.createStep('save file [{0}]', function(name, content) {
+            runtime.createAttachment(name, content);
+        });
+        stepFn('test', 'test content');
+        expect(allure.getCurrentSuite().currentTest.attachments).toEqual([]);
+        expect(allure.getCurrentSuite().currentTest.steps).toEqual([jasmine.objectContaining({
+            attachments: [jasmine.objectContaining({title: 'test', type: 'text/plain'})]
+        })]);
+    });
+
     it('should able to assign labels to test', function() {
         runtime.addLabel('feature', 'labels');
         runtime.addLabel('story', 'add from runtime');

@@ -65,7 +65,7 @@ Allure.prototype.addAttachment = function(attachmentName, buffer, type) {
     var info = util.getBufferInfo(buffer, type),
         name = writer.writeBuffer(this.options.targetDir, buffer, info.ext),
         attachment = new Attachment(attachmentName, name, buffer.length, info.mime);
-    this.getCurrentSuite().currentTest.addAttachment(attachment);
+    this.getCurrentSuite().currentStep.addAttachment(attachment);
 };
 
 Allure.prototype.pendingCase = function(testName, timestamp) {

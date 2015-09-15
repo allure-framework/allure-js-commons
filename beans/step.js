@@ -10,6 +10,10 @@ Step.prototype.addStep = function (step) {
     this.steps.push(step);
 };
 
+Step.prototype.addAttachment = function (attachment) {
+    this.attachments.push(attachment);
+};
+
 Step.prototype.end = function (status, timestamp) {
     this.status = status;
     this.stop = Date.now() || timestamp;
@@ -24,6 +28,11 @@ Step.prototype.toXML = function () {
         },
         name: this.name,
         title: this.name,
+        attachments: {
+            attachment: this.attachments.map(function (attachment) {
+                return attachment.toXML();
+            })
+        },
         steps: {
             step: this.steps.map(function (step) {
                 return step.toXML();
