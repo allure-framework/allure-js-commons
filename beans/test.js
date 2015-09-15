@@ -1,3 +1,4 @@
+'use strict';
 var STATUSES = ['passed', 'pending', 'skipped', 'failed', 'broken'];
 function Test(name, timestamp) {
     this.name = name;
@@ -16,11 +17,11 @@ Test.prototype.addLabel = function (name, value) {
 };
 
 Test.prototype.addStep = function (step) {
-    this.steps.push(step)
+    this.steps.push(step);
 };
 
 Test.prototype.addAttachment = function (attachment) {
-    this.attachments.push(attachment)
+    this.attachments.push(attachment);
 };
 
 Test.prototype.end = function (status, error, timestamp) {
@@ -53,7 +54,7 @@ Test.prototype.toXML = function () {
                         name: label.name,
                         value: label.value
                     }
-                }
+                };
             })
         },
         steps: {

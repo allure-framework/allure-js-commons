@@ -1,3 +1,4 @@
+'use strict';
 var _ = require('lodash'),
     Suite = require('./beans/suite'),
     Test = require('./beans/test'),
@@ -8,11 +9,12 @@ var _ = require('lodash'),
 
 function Allure() {
     this.suites = [];
+    this.options = {
+        targetDir: 'allure-results'
+    };
 }
 Allure.prototype.setOptions = function(options) {
-    this.options = _.defaults(options, {
-        targetDir: 'allure-results'
-    });
+    _.assign(this.options, options);
 };
 
 Allure.prototype.getCurrentSuite = function() {

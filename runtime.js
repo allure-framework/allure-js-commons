@@ -1,3 +1,4 @@
+'use strict';
 var Allure = function(allure) {
     this._allure = allure;
 };
@@ -5,7 +6,7 @@ var Allure = function(allure) {
 Allure.prototype.createStep = function(name, stepFunc) {
     var that = this;
     return function() {
-        var stepName = that._replace(name, Array.prototype.slice.call(arguments, 0)),
+        var stepName = that._format(name, Array.prototype.slice.call(arguments, 0)),
             status = 'passed';
         that._allure.startStep(stepName);
         try {
@@ -19,15 +20,19 @@ Allure.prototype.createStep = function(name, stepFunc) {
             that._allure.endStep(status);
         }
         return result;
-    }
+    };
 };
 
-Allure.prototype.createAttachment = function(name, attachmentFunc, type) {
+Allure.prototype.createAttachment = function(name, content, type) {
     var that = this;
-    return function() {
-        var attachmentName = that._replace(name, Array.prototype.slice.call(arguments, 0)),
-            buffer = attachmentFunc.apply(this, arguments);
-        that._allure.addAttachment(attachmentName, buffer, type);
+    if(typeof content === 'function') {
+        return function() {
+            var attachmentName = that._format(name, Array.prototype.slice.call(arguments, 0)),
+                buffer = content.apply(this, arguments);
+            return that.createAttachment(attachmentName, buffer, type);
+        };
+    } else {
+        return that._allure.addAttachment(name, content, type);
     }
 };
 
@@ -35,7 +40,7 @@ Allure.prototype.addLabel = function(name, value) {
     this._allure.getCurrentSuite().currentTest.addLabel(name, value);
 };
 
-Allure.prototype._replace = function(name, arr) {
+Allure.prototype._format = function(name, arr) {
     return name.replace(/(\{(\d+)\})/gi, function(match, submatch, index) {
         return arr[index];
     });

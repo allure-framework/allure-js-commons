@@ -16,6 +16,6 @@ module.exports = {
         return {
             mime: fileMime,
             ext: fileExtension
-        }
+        };
     }
 };

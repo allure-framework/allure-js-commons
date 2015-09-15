@@ -1,3 +1,4 @@
+'use strict';
 function Step(name, timestamp) {
     this.name = name;
     this.start = timestamp || Date.now();
@@ -6,7 +7,7 @@ function Step(name, timestamp) {
 }
 
 Step.prototype.addStep = function (step) {
-    this.steps.push(step)
+    this.steps.push(step);
 };
 
 Step.prototype.end = function (status, timestamp) {
@@ -28,7 +29,7 @@ Step.prototype.toXML = function () {
                 return step.toXML();
             })
         }
-    }
+    };
 };
 
 module.exports = Step;

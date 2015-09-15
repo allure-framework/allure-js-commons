@@ -16,7 +16,7 @@ Attachment.prototype.toXML = function () {
             type: this.type,
             size: this.size
         }
-    }
+    };
 };
 
 module.exports = Attachment;

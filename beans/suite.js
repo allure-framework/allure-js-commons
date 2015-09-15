@@ -29,7 +29,7 @@ Suite.prototype.toXML = function() {
                 return testcase.toXML();
             })
         }
-    }
+    };
 };
 
 module.exports = Suite;
