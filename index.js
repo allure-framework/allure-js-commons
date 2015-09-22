@@ -61,6 +61,10 @@ Allure.prototype.endStep = function(status, timestamp) {
     suite.currentStep = suite.currentStep.parent;
 };
 
+Allure.prototype.setDesctiption = function(description) {
+    this.getCurrentSuite().currentTest.setDesctiption(description);
+};
+
 Allure.prototype.addAttachment = function(attachmentName, buffer, type) {
     var info = util.getBufferInfo(buffer, type),
         name = writer.writeBuffer(this.options.targetDir, buffer, info.ext),

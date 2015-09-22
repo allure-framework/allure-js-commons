@@ -15,6 +15,19 @@ describe('allure-runtime', function() {
         allure.startCase('dummy case');
     });
 
+    it('should add labels and description', function() {
+        runtime.description('test desc');
+        runtime.feature('labels');
+        runtime.story('add');
+        expect(allure.getCurrentSuite().currentTest).toEqual(joc({
+            description: 'test desc',
+            labels: [
+                {name: 'feature', value: 'labels'},
+                {name: 'story', value: 'add'}
+            ]
+        }));
+    });
+
     it('should create steps and record them', function() {
         var stepSpy = jasmine.createSpy('stepSpy');
         var stepFn = runtime.createStep('demo step [{0}]', stepSpy);

@@ -52,6 +52,30 @@ Allure.prototype.addLabel = function(name, value) {
     this._allure.getCurrentSuite().currentTest.addLabel(name, value);
 };
 
+Allure.prototype.description = function(description) {
+    this._allure.setDesctiption(description);
+};
+
+Allure.prototype.SEVERITY = {
+    BLOCKER: 'blocker',
+    CRITICAL: 'critical',
+    NORMAL: 'normal',
+    MINOR: 'minor',
+    TRIVIAL: 'trivial'
+};
+
+Allure.prototype.severity = function(severity) {
+    this.addLabel('severity', severity);
+};
+
+Allure.prototype.feature = function(feature) {
+    this.addLabel('feature', feature);
+};
+
+Allure.prototype.story = function(story) {
+    this.addLabel('story', story);
+};
+
 Allure.prototype._format = function(name, arr) {
     return name.replace(/(\{(\d+)\})/gi, function(match, submatch, index) {
         return arr[index];
