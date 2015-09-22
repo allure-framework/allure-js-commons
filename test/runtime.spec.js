@@ -1,11 +1,8 @@
 'use strict';
 /*eslint-env jasmine */
-var mockery = require('mockery');
-mockery.enable({warnOnUnregistered: false});
-mockery.registerMock('fs-extra', require('./helpers/mock-fs'));
+var proxyquire = require('proxyquire');
+var Allure = proxyquire('../index', {'fs-extra': require('./helpers/mock-fs')});
 var AllureRuntime = require('../runtime');
-var Allure = require('../index');
-mockery.disable();
 
 var joc = jasmine.objectContaining.bind(jasmine);
 

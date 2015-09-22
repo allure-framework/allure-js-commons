@@ -12,7 +12,7 @@
   "devDependencies": {
     "eslint": "^1.4.1",
     "jasmine": "^2.3.2",
-    "mockery": "^1.4.0"
+    "proxyquire": "^1.7.2"
   },
   "dependencies": {
     "fs-extra": "^0.18.2",
