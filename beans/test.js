@@ -8,7 +8,7 @@ function Test(name, timestamp) {
     this.labels = [];
 }
 
-Test.prototype.setDesctiption = function (description) {
+Test.prototype.setDescription = function (description) {
     this.description = description;
 };
 

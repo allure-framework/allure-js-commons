@@ -16,7 +16,7 @@ Step.prototype.addAttachment = function (attachment) {
 
 Step.prototype.end = function (status, timestamp) {
     this.status = status;
-    this.stop = Date.now() || timestamp;
+    this.stop = timestamp || Date.now();
 };
 
 Step.prototype.toXML = function () {
