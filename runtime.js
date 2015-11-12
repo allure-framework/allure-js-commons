@@ -53,7 +53,7 @@ Allure.prototype.addLabel = function(name, value) {
 };
 
 Allure.prototype.description = function(description) {
-    this._allure.setDesctiption(description);
+    this._allure.setDescription(description);
 };
 
 Allure.prototype.SEVERITY = {
