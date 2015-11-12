@@ -131,4 +131,26 @@ describe('allure-runtime', function() {
             done();
         });
     });
+
+    it('should provide custom step start and stop time', function() {
+        allure.startStep('test step', 123);
+        allure.endStep('passed', 130);
+        expect(allure.getCurrentSuite().currentTest.steps).toEqual([
+            joc({
+                name: 'test step',
+                start: 123,
+                stop: 130
+            })
+        ]);
+    });
+
+    it('should allow to change test case status after end but only to failed', function() {
+        var testCase = allure.getCurrentSuite().testcases[0];
+        allure.endCase('passed');
+        expect(testCase.status).toBe('passed');
+        allure.endCase('failed', new Error('test error'));
+        expect(testCase.status).toBe('failed');
+        allure.endCase('passed');
+        expect(testCase.status).toBe('failed');
+    });
 });
