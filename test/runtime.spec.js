@@ -33,8 +33,8 @@ describe('allure-runtime', function() {
         runtime.addEnvironment('env', 'ok');
         expect(allure.getCurrentTest()).toEqual(joc({
             parameters: [
-                {name: 'test', value: 'value', kind: 'ARGUMENT'},
-                {name: 'env',  value: 'ok',    kind: 'ENVIRONMENT_VARIABLE'}
+                {name: 'test', value: 'value', kind: 'argument'},
+                {name: 'env',  value: 'ok',    kind: 'environment-variable'}
             ]
         }));
     });
