@@ -49,7 +49,15 @@ Allure.prototype.createAttachment = function(name, content, type) {
 };
 
 Allure.prototype.addLabel = function(name, value) {
-    this._allure.getCurrentSuite().currentTest.addLabel(name, value);
+    this._allure.getCurrentTest().addLabel(name, value);
+};
+
+Allure.prototype.addArgument = function(name, value) {
+    this._allure.getCurrentTest().addParameter('argument', name, value);
+};
+
+Allure.prototype.addEnvironment = function(name, value) {
+    this._allure.getCurrentTest().addParameter('environment-variable', name, value);
 };
 
 Allure.prototype.description = function(description) {

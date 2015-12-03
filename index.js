@@ -21,6 +21,10 @@ Allure.prototype.getCurrentSuite = function() {
     return this.suites[0];
 };
 
+Allure.prototype.getCurrentTest = function() {
+    return this.getCurrentSuite().currentTest;
+};
+
 Allure.prototype.startSuite = function(suiteName, timestamp) {
     this.suites.unshift(new Suite(suiteName, timestamp));
 };
@@ -43,8 +47,7 @@ Allure.prototype.startCase = function(testName, timestamp) {
 };
 
 Allure.prototype.endCase = function(status, err, timestamp) {
-    var suite = this.getCurrentSuite();
-    suite.currentTest.end(status, err, timestamp);
+    this.getCurrentTest().end(status, err, timestamp);
 };
 
 Allure.prototype.startStep = function(stepName, timestamp) {
@@ -62,7 +65,7 @@ Allure.prototype.endStep = function(status, timestamp) {
 };
 
 Allure.prototype.setDescription = function(description) {
-    this.getCurrentSuite().currentTest.setDescription(description);
+    this.getCurrentTest().setDescription(description);
 };
 
 Allure.prototype.addAttachment = function(attachmentName, buffer, type) {

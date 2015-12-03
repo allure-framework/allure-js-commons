@@ -6,6 +6,7 @@ function Test(name, timestamp) {
     this.steps = [];
     this.attachments = [];
     this.labels = [];
+    this.parameters = [];
 }
 
 Test.prototype.setDescription = function (description) {
@@ -14,6 +15,10 @@ Test.prototype.setDescription = function (description) {
 
 Test.prototype.addLabel = function (name, value) {
     this.labels.push({name: name, value: value});
+};
+
+Test.prototype.addParameter = function (kind, name, value) {
+    this.parameters.push({kind: kind, name: name, value: value});
 };
 
 Test.prototype.addStep = function (step) {
@@ -49,12 +54,12 @@ Test.prototype.toXML = function () {
         description: this.description,
         labels: {
             label: this.labels.map(function (label) {
-                return {
-                    '@': {
-                        name: label.name,
-                        value: label.value
-                    }
-                };
+                return { '@': label };
+            })
+        },
+        parameters: {
+            parameter: this.parameters.map(function (param) {
+                return { '@': param };
             })
         },
         steps: {

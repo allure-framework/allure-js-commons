@@ -28,6 +28,17 @@ describe('allure-runtime', function() {
         }));
     });
 
+    it('should add parameters', function() {
+        runtime.addArgument('test', 'value');
+        runtime.addEnvironment('env', 'ok');
+        expect(allure.getCurrentTest()).toEqual(joc({
+            parameters: [
+                {name: 'test', value: 'value', kind: 'ARGUMENT'},
+                {name: 'env',  value: 'ok',    kind: 'ENVIRONMENT_VARIABLE'}
+            ]
+        }));
+    });
+
     it('should create steps and record them', function() {
         var stepSpy = jasmine.createSpy('stepSpy');
         var stepFn = runtime.createStep('demo step [{0}]', stepSpy);
