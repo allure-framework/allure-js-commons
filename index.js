@@ -1,9 +1,9 @@
 'use strict';
 var _ = require('lodash'),
-    Suite = require('./beans/suite'),
-    Test = require('./beans/test'),
-    Step = require('./beans/step'),
-    Attachment = require('./beans/attachment'),
+    Suite = require('./lib/beans/suite'),
+    Test = require('./lib/beans/test'),
+    Step = require('./lib/beans/step'),
+    Attachment = require('./lib/beans/attachment'),
     util = require('./util'),
     writer = require('./writer');
 
