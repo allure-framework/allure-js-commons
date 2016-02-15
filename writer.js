@@ -8,6 +8,7 @@ module.exports = {
     writeSuite: function(targetDir, suites) {
         fs.outputFileSync(path.join(targetDir, uuid.v4() + '-testsuite.xml'), xml('ns2:test-suite', suites));
     },
+
     writeBuffer: function(targetDir, buffer, ext) {
         var fileName = uuid.v4() + '-attachment.' + ext;
         fs.outputFileSync(path.join(targetDir, fileName), buffer);
