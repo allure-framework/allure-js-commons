@@ -1,9 +1,9 @@
 'use strict';
 var _ = require('lodash'),
-    Suite = require('./beans/suite'),
-    Test = require('./beans/test'),
-    Step = require('./beans/step'),
-    Attachment = require('./beans/attachment'),
+    Suite = require('./lib/beans/suite'),
+    Test = require('./lib/beans/test'),
+    Step = require('./lib/beans/step'),
+    Attachment = require('./lib/beans/attachment'),
     util = require('./util'),
     writer = require('./writer');
 
@@ -32,9 +32,7 @@ Allure.prototype.startSuite = function(suiteName, timestamp) {
 Allure.prototype.endSuite = function(timestamp) {
     var suite = this.getCurrentSuite();
     suite.end(timestamp);
-    if(suite.hasTests()) {
-        writer.writeSuite(this.options.targetDir, suite.toXML());
-    }
+    suite.write(writer, this.options.targetDir);
     this.suites.shift();
 };
 
@@ -80,4 +78,12 @@ Allure.prototype.pendingCase = function(testName, timestamp) {
     this.endCase('pending', {message: 'Test ignored'}, timestamp);
 };
 
-module.exports = Allure;
+module.exports.Allure = Allure;
+
+module.exports.Suite = require('./lib/beans/suite');
+module.exports.Test = require('./lib/beans/test');
+module.exports.Step = require('./lib/beans/step');
+module.exports.Attachment = require('./lib/beans/attachment');
+
+module.exports.writer = require('./writer');
+
