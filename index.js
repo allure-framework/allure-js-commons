@@ -33,7 +33,7 @@ Allure.prototype.endSuite = function(timestamp) {
     var suite = this.getCurrentSuite();
     suite.end(timestamp);
     if(suite.hasTests()) {
-        writer.writeSuite(this.options.targetDir, suite.toXML());
+        writer.writeSuite(this.options.targetDir, suite);
     }
     this.suites.shift();
 };
