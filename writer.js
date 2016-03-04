@@ -6,7 +6,7 @@ var fs = require('fs-extra'),
 
 module.exports = {
     writeSuite: function(targetDir, suites) {
-        fs.outputFileSync(path.join(targetDir, uuid.v4() + '-testsuite.xml'), xml('ns2:test-suite', suites));
+        fs.outputFileSync(path.join(targetDir, uuid.v4() + '-testsuite.xml'), xml('ns2:test-suite', suites.toXML()));
     },
     writeBuffer: function(targetDir, buffer, ext) {
         var fileName = uuid.v4() + '-attachment.' + ext;
