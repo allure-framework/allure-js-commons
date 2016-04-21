@@ -23,10 +23,11 @@ Allure.prototype.createStep = function(name, stepFunc) {
         }
         finally {
             if(that.isPromise(result)) {
-                result.then(
-                    that._allure.endStep.bind(that._allure, 'passed'),
-                    that._allure.endStep.bind(that._allure, 'broken')
-                 );
+                result.then(function() {
+                    that._allure.endStep('passed');
+                }, function() {
+                    that._allure.endStep('broken');
+                });
             } else {
                 that._allure.endStep(status);
             }

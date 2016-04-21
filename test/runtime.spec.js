@@ -130,11 +130,15 @@ describe('allure-runtime', function() {
                     steps: [
                         joc({
                             name: 'passed',
-                            status: 'passed'
+                            status: 'passed',
+                            start: jasmine.any(Number),
+                            stop: jasmine.any(Number)
                         }),
                         joc({
                             name: 'broken',
-                            status: 'broken'
+                            status: 'broken',
+                            start: jasmine.any(Number),
+                            stop: jasmine.any(Number)
                         })
                     ]
                 })
