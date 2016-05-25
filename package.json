@@ -15,7 +15,7 @@
     "proxyquire": "^1.7.2"
   },
   "dependencies": {
-    "fs-extra": "^0.18.2",
+    "fs-extra": "^0.30.0",
     "js2xmlparser": "^0.1.9",
     "lodash": "^3.7.0",
     "node-uuid": "^1.4.3",
