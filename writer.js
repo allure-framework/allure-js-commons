@@ -12,5 +12,9 @@ module.exports = {
         var fileName = uuid.v4() + '-attachment.' + ext;
         fs.outputFileSync(path.join(targetDir, fileName), buffer);
         return fileName;
+    },
+    cleanDir: function(targetDir) {
+        console.log('Cleaning up allure results directory');
+        fs.emptyDirSync(targetDir);
     }
 };

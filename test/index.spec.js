@@ -1,5 +1,6 @@
 var proxyquire = require('proxyquire');
-var Allure = proxyquire('../index', {'fs-extra': require('./helpers/mock-fs')});
+var fsStub = require('./helpers/mock-fs');
+var Allure = proxyquire('../index', {'fs-extra': fsStub });
 var joc = jasmine.objectContaining.bind(jasmine);
 
 describe('allure-reporter', function() {
@@ -45,5 +46,17 @@ describe('allure-reporter', function() {
         allure.endStep('passed');
         expect(console.warn.calls.count()).toBe(1);
         expect(suite.currentTest).toBe(suite.currentStep);
+    });
+
+    it('should cleanup dir before start', function() {
+        allure.endCase('passed');
+        allure.endSuite();
+        expect(Object.keys(fsStub.files).length).toEqual(1);
+
+        var allureWithConf = new Allure();
+        allureWithConf.setOptions({ cleanDir: true });
+        allureWithConf.beforeStart();
+
+        expect(Object.keys(fsStub.files).length).toEqual(0);
     });
 });
