@@ -4,5 +4,8 @@ module.exports = {
     outputFileSync: function(path, content) {
         this.files[path] = content.toString();
     },
+    emptyDirSync: function() {
+        this.files = {};
+    },
     '@global': true
 };

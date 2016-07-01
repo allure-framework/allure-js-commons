@@ -25,6 +25,12 @@ Allure.prototype.getCurrentTest = function() {
     return this.getCurrentSuite().currentTest;
 };
 
+Allure.prototype.beforeStart = function beforeStart() {
+    if(this.options.cleanDir === true) {
+        writer.cleanDir(this.options.targetDir);
+    }
+};
+
 Allure.prototype.startSuite = function(suiteName, timestamp) {
     this.suites.unshift(new Suite(suiteName, timestamp));
 };
