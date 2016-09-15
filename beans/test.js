@@ -1,4 +1,7 @@
 'use strict';
+
+var Description = require('./description');
+
 var STATUSES = ['passed', 'pending', 'skipped', 'failed', 'broken'];
 function Test(name, timestamp) {
     this.name = name;
@@ -9,8 +12,8 @@ function Test(name, timestamp) {
     this.parameters = [];
 }
 
-Test.prototype.setDescription = function (description) {
-    this.description = description;
+Test.prototype.setDescription = function (description, type) {
+    this.description = new Description(description, type);
 };
 
 Test.prototype.addLabel = function (name, value) {
@@ -51,7 +54,6 @@ Test.prototype.toXML = function () {
         },
         name: this.name,
         title: this.name,
-        description: this.description,
         labels: {
             label: this.labels.map(function (label) {
                 return { '@': label };
@@ -73,9 +75,15 @@ Test.prototype.toXML = function () {
             })
         }
     };
+
     if (this.failure) {
         result.failure = this.failure;
     }
+
+    if (this.description) {
+        result.description = this.description.toXML();
+    }
+
     return result;
 };
 

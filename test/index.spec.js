@@ -46,4 +46,25 @@ describe('allure-reporter', function() {
         expect(console.warn.calls.count()).toBe(1);
         expect(suite.currentTest).toBe(suite.currentStep);
     });
+
+    it('should add text type description by default', function() {
+        var testCase = allure.getCurrentSuite().testcases[0];
+        var description = 'test desc';
+
+        allure.setDescription(description);
+
+        expect(testCase.description.value).toBe(description);
+        expect(testCase.description.type).toBe('text');
+    });
+
+    it('should add description with markdown', function() {
+        var testCase = allure.getCurrentSuite().testcases[0];
+        var description = 'test desc';
+        var type = 'markdown';
+
+        allure.setDescription(description, type);
+
+        expect(testCase.description.value).toBe(description);
+        expect(testCase.description.type).toBe(type);
+    });
 });
