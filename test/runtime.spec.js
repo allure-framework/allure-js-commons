@@ -14,16 +14,38 @@ describe('allure-runtime', function() {
         allure.startCase('dummy case');
     });
 
-    it('should add labels and description', function() {
-        runtime.description('test desc');
+    it('should add labels', function() {
         runtime.feature('labels');
         runtime.story('add');
+
         expect(allure.getCurrentSuite().currentTest).toEqual(joc({
-            description: 'test desc',
             labels: [
                 {name: 'feature', value: 'labels'},
                 {name: 'story', value: 'add'}
             ]
+        }));
+    });
+
+    it('should add text type description by default', function() {
+        var description = 'test desc';
+
+        runtime.description(description);
+
+        expect(allure.getCurrentSuite().currentTest.description).toEqual(joc({
+            type: 'text',
+            value: description
+        }));
+    });
+
+    it('should add description with markdown', function() {
+        var description = 'test desc';
+        var type = 'markdown';
+
+        runtime.description(description, type);
+
+        expect(allure.getCurrentSuite().currentTest.description).toEqual(joc({
+            type: type,
+            value: description
         }));
     });
 

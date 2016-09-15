@@ -61,8 +61,8 @@ Allure.prototype.addEnvironment = function(name, value) {
     this._allure.getCurrentTest().addParameter('environment-variable', name, value);
 };
 
-Allure.prototype.description = function(description) {
-    this._allure.setDescription(description);
+Allure.prototype.description = function(description, type) {
+    this._allure.setDescription(description, type);
 };
 
 Allure.prototype.SEVERITY = {
