@@ -1,7 +1,7 @@
 'use strict';
 var fs = require('fs-extra'),
     path = require('path'),
-    uuid = require('node-uuid'),
+    uuid = require('uuid'),
     xml = require('js2xmlparser');
 
 module.exports = {
