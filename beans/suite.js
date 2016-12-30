@@ -16,13 +16,13 @@ Suite.prototype.addTest = function(test) {
 };
 
 Suite.prototype.toXML = function() {
-	var start = (this.start == "" || typeof this.start === "undefined") ? Date.now() : this.start;
-    var stop = (this.stop == "" || typeof this.stop === "undefined") ? Date.now() : this.stop;
+	var start = (this.start == '' || typeof this.start === 'undefined') ? Date.now() : this.start;
+    var stop = (this.stop == '' || typeof this.stop === 'undefined') ? Date.now() : this.stop;
     return {
         '@': {
             'xmlns:ns2' : 'urn:model.allure.qatools.yandex.ru',
             start: start,
-            stop: stop,
+            stop: stop
         },
         name: this.name,
         title: this.name,
