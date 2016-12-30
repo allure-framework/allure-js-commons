@@ -22,7 +22,7 @@ Step.prototype.end = function (status, timestamp) {
 Step.prototype.toXML = function () {
     var start = (this.start == '' || typeof this.start === 'undefined') ? Date.now() : this.start;
     var stop = (this.stop == '' || typeof this.stop === 'undefined') ? Date.now() : this.stop;
-    var status = (this.status == '' || typeof this.status === 'undefined') ? "failed" : this.status;
+    var status = (this.status == '' || typeof this.status === 'undefined') ? 'failed' : this.status;
 
     return {
         '@': {

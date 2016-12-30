@@ -16,7 +16,7 @@ Suite.prototype.addTest = function(test) {
 };
 
 Suite.prototype.toXML = function() {
-	var start = (this.start == '' || typeof this.start === 'undefined') ? Date.now() : this.start;
+    var start = (this.start == '' || typeof this.start === 'undefined') ? Date.now() : this.start;
     var stop = (this.stop == '' || typeof this.stop === 'undefined') ? Date.now() : this.stop;
     return {
         '@': {
