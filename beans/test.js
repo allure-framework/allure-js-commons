@@ -46,7 +46,6 @@ Test.prototype.end = function (status, error, timestamp) {
 };
 
 Test.prototype.toXML = function () {
-	console.log('Test.prototype.toXML', this.start, this.stop);
     var start = (this.start == "" || typeof this.start === "undefined") ? Date.now() : this.start;
     var stop = (this.stop == "" || typeof this.stop === "undefined") ? Date.now() : this.stop;
     var status = (this.status == "" || typeof this.status === "undefined") ? "failed" : this.status;
