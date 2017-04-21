@@ -23,7 +23,7 @@ Step.prototype.toXML = function () {
     return {
         '@': {
             start: this.start,
-            stop: this.stop,
+            stop: this.stop || Date.now(),
             status: this.status
         },
         name: this.name,
