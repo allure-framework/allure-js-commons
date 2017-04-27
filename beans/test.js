@@ -49,7 +49,6 @@ Test.prototype.toXML = function () {
     var result = {
         '@': {
             start: this.start,
-            stop: this.stop,
             status: this.status
         },
         name: this.name,
@@ -82,6 +81,10 @@ Test.prototype.toXML = function () {
 
     if (this.description) {
         result.description = this.description.toXML();
+    }
+
+    if(this.stop) {
+        result['@'].stop = this.stop;
     }
 
     return result;

@@ -20,10 +20,9 @@ Step.prototype.end = function (status, timestamp) {
 };
 
 Step.prototype.toXML = function () {
-    return {
+    var result = {
         '@': {
             start: this.start,
-            stop: this.stop,
             status: this.status
         },
         name: this.name,
@@ -39,6 +38,12 @@ Step.prototype.toXML = function () {
             })
         }
     };
+
+    if(this.stop) {
+        result['@'].stop = this.stop;
+    }
+
+    return result;
 };
 
 module.exports = Step;

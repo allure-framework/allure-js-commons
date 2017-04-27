@@ -16,11 +16,10 @@ Suite.prototype.addTest = function(test) {
 };
 
 Suite.prototype.toXML = function() {
-    return {
+    var result = {
         '@': {
             'xmlns:ns2' : 'urn:model.allure.qatools.yandex.ru',
-            start: this.start,
-            stop: this.stop
+            start: this.start
         },
         name: this.name,
         title: this.name,
@@ -30,6 +29,13 @@ Suite.prototype.toXML = function() {
             })
         }
     };
+
+
+    if(this.stop) {
+        result['@'].stop = this.stop;
+    }
+
+    return result;
 };
 
 module.exports = Suite;
