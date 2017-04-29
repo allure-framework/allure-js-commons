@@ -1,5 +1,5 @@
 'use strict';
-var _ = require('lodash'),
+var assign = require('object-assign'),
     Suite = require('./beans/suite'),
     Test = require('./beans/test'),
     Step = require('./beans/step'),
@@ -14,7 +14,7 @@ function Allure() {
     };
 }
 Allure.prototype.setOptions = function(options) {
-    _.assign(this.options, options);
+    assign(this.options, options);
 };
 
 Allure.prototype.getCurrentSuite = function() {
