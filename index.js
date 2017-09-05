@@ -53,19 +53,19 @@ Allure.prototype.endCase = function(status, err, timestamp) {
 Allure.prototype.startStep = function(stepName, timestamp) {
     var step = new Step(stepName, timestamp),
         suite = this.getCurrentSuite();
-    step.parent = suite.currentStep;
-    step.parent.addStep(step);
-    suite.currentStep = step;
+    if (suite.currentStep) {
+        step.parent = suite.currentStep;
+        step.parent.addStep(step);
+        suite.currentStep = step;
+    }
 };
 
 Allure.prototype.endStep = function(status, timestamp) {
     var suite = this.getCurrentSuite();
-    if(!(suite.currentStep instanceof Step)) {
-        console.warn('allure-js-commons: Unexpected endStep(). There is no any steps running');
-        return;
+    if (suite.currentStep) {
+        suite.currentStep.end(status, timestamp);
+        suite.currentStep = suite.currentStep.parent;
     }
-    suite.currentStep.end(status, timestamp);
-    suite.currentStep = suite.currentStep.parent;
 };
 
 Allure.prototype.setDescription = function(description, type) {
@@ -75,8 +75,12 @@ Allure.prototype.setDescription = function(description, type) {
 Allure.prototype.addAttachment = function(attachmentName, buffer, type) {
     var info = util.getBufferInfo(buffer, type),
         name = writer.writeBuffer(this.options.targetDir, buffer, info.ext),
-        attachment = new Attachment(attachmentName, name, buffer.length, info.mime);
-    this.getCurrentSuite().currentStep.addAttachment(attachment);
+        attachment = new Attachment(attachmentName, name, buffer.length, info.mime),
+        currentStep = this.getCurrentSuite().currentStep;
+
+    if (currentStep) {
+        this.getCurrentSuite().currentStep.addAttachment(attachment);
+    }
 };
 
 Allure.prototype.pendingCase = function(testName, timestamp) {
