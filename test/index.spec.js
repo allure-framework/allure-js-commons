@@ -22,6 +22,11 @@ describe('allure-reporter', function () {
             expect(allure.getCurrentSuite().testcases.length).toBe(0);
         });
 
+        it('should warn if trying to append step to non-existent case', function () {
+            allure.startStep('test step');
+            expect(console.warn).toHaveBeenCalledTimes(1);
+        });
+
         it('should warn on adding attachment on non-existent step', function () {
             spyOn(writer, 'writeBuffer').and.returnValue('someAttachmentName');
 
