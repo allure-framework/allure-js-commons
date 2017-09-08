@@ -1,3 +1,5 @@
+## 1.3.1
+* Add possibility to run steps without parent (fix https://github.com/allure-framework/allure-jasmine/issues/30)
 ## 1.3.0
 * Bump dependencies versions
 * do not write stop attributes when they are empty
