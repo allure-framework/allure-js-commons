@@ -54,7 +54,7 @@ Allure.prototype.startStep = function(stepName, timestamp) {
     var step = new Step(stepName, timestamp),
         suite = this.getCurrentSuite();
     if (!suite || !suite.currentStep) {
-        console.warn('allure-js-commons: Unexpected startStep() of' + stepName + '. There is no parent step');
+        console.warn('allure-js-commons: Unexpected startStep() of ' + stepName + '. There is no parent step');
         return;
     }
 
@@ -66,7 +66,7 @@ Allure.prototype.startStep = function(stepName, timestamp) {
 
 Allure.prototype.endStep = function(status, timestamp) {
     var suite = this.getCurrentSuite();
-    if (!(suite.currentStep instanceof Step)) {
+    if (!suite || !(suite.currentStep instanceof Step)) {
         console.warn('allure-js-commons: Unexpected endStep(). There are no any steps running');
         return;
     }
