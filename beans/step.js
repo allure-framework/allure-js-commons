@@ -1,49 +1,60 @@
-'use strict';
-function Step(name, timestamp) {
+"use strict";
+module.exports = class Step {
+  constructor(name, timestamp) {
     this.name = name;
     this.start = timestamp || Date.now();
     this.steps = [];
     this.attachments = [];
-}
+  }
 
-Step.prototype.addStep = function (step) {
+  addStep(step) {
     this.steps.push(step);
-};
+  }
 
-Step.prototype.addAttachment = function (attachment) {
+  addAttachment(attachment) {
     this.attachments.push(attachment);
-};
+  }
 
-Step.prototype.end = function (status, timestamp) {
+  end(status, timestamp) {
     this.status = status;
     this.stop = timestamp || Date.now();
-};
+  }
 
-Step.prototype.toXML = function () {
-    var result = {
-        '@': {
-            start: this.start,
-            status: this.status
-        },
-        name: this.name,
-        title: this.name,
-        attachments: {
-            attachment: this.attachments.map(function (attachment) {
-                return attachment.toXML();
-            })
-        },
-        steps: {
-            step: this.steps.map(function (step) {
-                return step.toXML();
-            })
-        }
+  toJSON() {
+    return {
+      name: this.name,
+      start: this.start,
+      stop: this.stop,
+      status: this.status,
+      steps: this.steps.map(step => step.toJSON()),
+      attachments: this.attachments
     };
-
-    if(this.stop) {
-        result['@'].stop = this.stop;
-    }
-
-    return result;
+  }
 };
 
-module.exports = Step;
+// Step.prototype.toXML = function() {
+//   var result = {
+//     "@": {
+//       start: this.start,
+//       status: this.status
+//     },
+//     name: this.name,
+//     title: this.name,
+//     attachments: {
+//       attachment: this.attachments.map(function(attachment) {
+//         return attachment.toXML();
+//       })
+//     },
+//     steps: {
+//       step: this.steps.map(function(step) {
+//         return step.toXML();
+//       })
+//     }
+//   };
+
+//   if (this.stop) {
+//     result["@"].stop = this.stop;
+//   }
+
+//   return result;
+// };

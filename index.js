@@ -1,100 +1,121 @@
-'use strict';
-var assign = require('object-assign'),
-    Suite = require('./beans/suite'),
-    Test = require('./beans/test'),
-    Step = require('./beans/step'),
-    Attachment = require('./beans/attachment'),
-    util = require('./util'),
-    writer = require('./writer');
+"use strict";
+const Suite = require("./beans/suite");
+const Test = require("./beans/test");
+const Step = require("./beans/step");
+const Attachment = require("./beans/attachment");
+const util = require("./util");
+const writer = require("./writer");
 
-function Allure() {
+//TODO
+// 0. report JSON errors
+// 1. Solve multiple test ends
+// 2. Write to environment file
+// 3. Arguments -> Parameters
+// 4. What to do with suites?
+// 5. Pedning state is skipped now
+// 6. Missing:
+// * historyId, testcaseId, rerunOf
+// * fullName
+// * statusDetails.{known,muted,flaky}
+// * links
+// * stage
+// * step parameters, descriptions?
+
+// Diff analysis
+// * copy block on the top is missing
+// * step should now have status result too
+
+module.exports = class Allure {
+  constructor() {
     this.suites = [];
     this.options = {
-        targetDir: 'allure-results'
+      targetDir: "allure-results"
     };
-}
-Allure.prototype.setOptions = function(options) {
-    assign(this.options, options);
-};
+  }
 
-Allure.prototype.getCurrentSuite = function() {
+  setOptions(options) {
+    Object.assign(this.options, options);
+  }
+
+  getCurrentSuite() {
     return this.suites[0];
-};
+  }
 
-Allure.prototype.getCurrentTest = function() {
+  getCurrentTest() {
     return this.getCurrentSuite().currentTest;
-};
+  }
 
-Allure.prototype.startSuite = function(suiteName, timestamp) {
+  startSuite(suiteName, timestamp) {
     this.suites.unshift(new Suite(suiteName, timestamp));
-};
+  }
 
-Allure.prototype.endSuite = function(timestamp) {
-    var suite = this.getCurrentSuite();
+  endSuite(timestamp) {
+    const suite = this.getCurrentSuite();
     suite.end(timestamp);
-    if(suite.hasTests()) {
-        writer.writeSuite(this.options.targetDir, suite);
-    }
+    // if (suite.hasTests()) {
+    //   writer.writeSuite(this.options.targetDir, suite);
+    // }
     this.suites.shift();
-};
+  }
 
-Allure.prototype.startCase = function(testName, timestamp) {
-    var test = new Test(testName, timestamp),
-        suite = this.getCurrentSuite();
+  startCase(testName, timestamp) {
+    const suite = this.getCurrentSuite();
+    const test = new Test(testName, suite.name, timestamp);
     suite.currentTest = test;
     suite.currentStep = test;
     suite.addTest(test);
-};
+  }
 
-Allure.prototype.endCase = function(status, err, timestamp) {
+  endCase(status, err, timestamp) {
     this.getCurrentTest().end(status, err, timestamp);
-};
+    writer.writeCase(this.options.targetDir, this.getCurrentTest().toJSON());
+  }
 
-Allure.prototype.startStep = function(stepName, timestamp) {
-    var step = new Step(stepName, timestamp),
-        suite = this.getCurrentSuite();
+  startStep(stepName, timestamp) {
+    const step = new Step(stepName, timestamp);
+    const suite = this.getCurrentSuite();
     if (!suite || !suite.currentStep) {
-        console.warn('allure-js-commons: Unexpected startStep() of ' + stepName + '. There is no parent step');
-        return;
+      console.warn(
+        `allure-js-commons: Unexpected startStep() of ${stepName}. There is no parent step`
+      );
+      return;
     }
 
     step.parent = suite.currentStep;
     step.parent.addStep(step);
     suite.currentStep = step;
+  }
 
-};
-
-Allure.prototype.endStep = function(status, timestamp) {
-    var suite = this.getCurrentSuite();
+  endStep(status, timestamp) {
+    const suite = this.getCurrentSuite();
     if (!suite || !(suite.currentStep instanceof Step)) {
-        console.warn('allure-js-commons: Unexpected endStep(). There are no any steps running');
-        return;
+      console.warn("allure-js-commons: Unexpected endStep(). There are no any steps running");
+      return;
     }
 
     suite.currentStep.end(status, timestamp);
     suite.currentStep = suite.currentStep.parent;
-};
+  }
 
-Allure.prototype.setDescription = function(description, type) {
+  setDescription(description, type) {
     this.getCurrentTest().setDescription(description, type);
-};
+  }
 
-Allure.prototype.addAttachment = function(attachmentName, buffer, type) {
-    var info = util.getBufferInfo(buffer, type),
-        name = writer.writeBuffer(this.options.targetDir, buffer, info.ext),
-        attachment = new Attachment(attachmentName, name, buffer.length, info.mime),
-        currentStep = this.getCurrentSuite().currentStep;
+  addAttachment(attachName, buffer, type) {
+    const info = util.getBufferInfo(buffer, type);
+    const fileName = writer.writeBuffer(this.options.targetDir, buffer, info.ext);
+    const attachment = new Attachment(attachName, fileName, info.mime);
+    const currentStep = this.getCurrentSuite().currentStep;
 
     if (currentStep) {
-        currentStep.addAttachment(attachment);
+      currentStep.addAttachment(attachment);
     } else {
-        console.warn('Trying to add attachment ' + attachmentName + ' to non-existent step');
+      console.warn(`Trying to add attachment ${attachName} to non-existent step`);
     }
-};
+  }
 
-Allure.prototype.pendingCase = function(testName, timestamp) {
+  pendingCase(testName, timestamp) {
     this.startCase(testName, timestamp);
-    this.endCase('pending', {message: 'Test ignored'}, timestamp);
+    this.endCase("skipped", { message: "Test ignored" }, timestamp);
+  }
 };
-
-module.exports = Allure;

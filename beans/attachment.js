@@ -1,22 +1,15 @@
-/**
- * Created by dolf on 12.05.15.
- */
-function Attachment(title, source, size, mime) {
-    this.title = title;
-    this.type = mime;
-    this.size = size;
+module.exports = class Attachment {
+  constructor(name, source, type) {
+    this.name = name;
     this.source = source;
-}
+    this.type = type;
+  }
 
-Attachment.prototype.toXML = function () {
+  toJSON() {
     return {
-        '@': {
-            title: this.title,
-            source: this.source,
-            type: this.type,
-            size: this.size
-        }
+      name: this.name,
+      source: this.source,
+      type: this.type
     };
+  }
 };
-
-module.exports = Attachment;
