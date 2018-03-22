@@ -15,11 +15,13 @@ describe('allure-runtime', function() {
     });
 
     it('should add labels', function() {
+        runtime.epic('anEpic');
         runtime.feature('labels');
         runtime.story('add');
 
         expect(allure.getCurrentSuite().currentTest).toEqual(joc({
             labels: [
+                {name: 'epic', value: 'anEpic'},
                 {name: 'feature', value: 'labels'},
                 {name: 'story', value: 'add'}
             ]

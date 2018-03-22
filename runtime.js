@@ -77,6 +77,10 @@ Allure.prototype.severity = function(severity) {
     this.addLabel('severity', severity);
 };
 
+Allure.prototype.epic = function(epic) {
+    this.addLabel('epic', epic);
+};
+
 Allure.prototype.feature = function(feature) {
     this.addLabel('feature', feature);
 };
