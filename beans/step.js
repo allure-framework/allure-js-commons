@@ -1,7 +1,7 @@
 'use strict';
 function Step(name, timestamp) {
     this.name = name;
-    this.start = timestamp || Date.now();
+    this.start = isNaN(Number(timestamp)) ? Date.now() : timestamp;
     this.steps = [];
     this.attachments = [];
 }
@@ -16,7 +16,7 @@ Step.prototype.addAttachment = function (attachment) {
 
 Step.prototype.end = function (status, timestamp) {
     this.status = status;
-    this.stop = timestamp || Date.now();
+    this.stop = isNaN(Number(timestamp)) ? Date.now() : timestamp;
 };
 
 Step.prototype.toXML = function () {

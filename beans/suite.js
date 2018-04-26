@@ -1,10 +1,10 @@
 function Suite(name, timestamp) {
     this.name = name;
-    this.start = timestamp || Date.now();
+    this.start = isNaN(Number(timestamp)) ? Date.now() : timestamp;
     this.testcases = [];
 }
 Suite.prototype.end = function(timestamp) {
-    this.stop = timestamp || Date.now();
+    this.stop = isNaN(Number(timestamp)) ? Date.now() : timestamp;
 };
 
 Suite.prototype.hasTests = function() {
