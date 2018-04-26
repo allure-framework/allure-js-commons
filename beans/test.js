@@ -5,7 +5,7 @@ var Description = require('./description');
 var STATUSES = ['passed', 'pending', 'skipped', 'failed', 'broken'];
 function Test(name, timestamp) {
     this.name = name;
-    this.start = timestamp || Date.now();
+    this.start = isNaN(Number(timestamp)) ? Date.now() : timestamp;
     this.steps = [];
     this.attachments = [];
     this.labels = [];
@@ -33,7 +33,7 @@ Test.prototype.addAttachment = function (attachment) {
 };
 
 Test.prototype.end = function (status, error, timestamp) {
-    this.stop = timestamp || Date.now();
+    this.stop = isNaN(Number(timestamp)) ? Date.now() : timestamp;
     if(STATUSES.indexOf(status) > STATUSES.indexOf(this.status)) {
         this.status = status;
     }
