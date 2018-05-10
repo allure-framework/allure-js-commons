@@ -8,7 +8,7 @@ module.exports = {
             fileMime = 'text/plain';
         if(type) {
             fileMime = type;
-            fileExtension = mime.extension(fileMime);
+            fileExtension = mime.getExtension(fileMime);
         } else if(fileInfo) {
             fileExtension = fileInfo.ext;
             fileMime = fileInfo.mime;
