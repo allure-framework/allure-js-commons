@@ -89,6 +89,14 @@ Allure.prototype.story = function(story) {
     this.addLabel('story', story);
 };
 
+Allure.prototype.issue = function(value) {
+    this.addLabel('issue', value);
+};
+
+Allure.prototype.testId = function(value) {
+    this.addLabel('testId', value);
+};
+
 Allure.prototype._format = function(name, arr) {
     return name.replace(/(\{(\d+)\})/gi, function(match, submatch, index) {
         return arr[index];
