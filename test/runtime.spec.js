@@ -18,12 +18,16 @@ describe('allure-runtime', function() {
         runtime.epic('anEpic');
         runtime.feature('labels');
         runtime.story('add');
+        runtime.issue('1');
+        runtime.testId('2');
 
         expect(allure.getCurrentSuite().currentTest).toEqual(joc({
             labels: [
                 {name: 'epic', value: 'anEpic'},
                 {name: 'feature', value: 'labels'},
-                {name: 'story', value: 'add'}
+                {name: 'story', value: 'add'},
+                {name: 'issue', value: '1'},
+                {name: 'testId', value: '2'}
             ]
         }));
     });
@@ -126,9 +130,13 @@ describe('allure-runtime', function() {
     it('should able to assign labels to test', function() {
         runtime.addLabel('feature', 'labels');
         runtime.addLabel('story', 'add from runtime');
+        runtime.addLabel('issue', '1');
+        runtime.addLabel('testId', '2');
         expect(allure.getCurrentSuite().currentTest.labels).toEqual([
             {name: 'feature', value: 'labels'},
-            {name: 'story', value: 'add from runtime'}
+            {name: 'story', value: 'add from runtime'},
+            {name: 'issue', value: '1'},
+            {name: 'testId', value: '2'}
         ]);
     });
 
