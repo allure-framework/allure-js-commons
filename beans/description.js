@@ -1,4 +1,4 @@
-'use srtict';
+'use strict';
 
 var TYPES = {
     TEXT: 'text',
