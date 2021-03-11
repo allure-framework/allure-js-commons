@@ -8,10 +8,10 @@ module.exports = {
     writeSuite: function(targetDir, suites) {
         fs.outputFileSync(path.join(targetDir, uuid.v4() + '-testsuite.xml'), xml.parse('ns2:test-suite', suites.toXML()));
     },
-    writeBuffer: function(targetDir, buffer, ext, nameId) {
+    writeBuffer: function(targetDir, buffer, ext, nameFile) {
         let fileName;
-        if(!!nameId) {
-            fileName = nameId + '-attachment.' + ext;
+        if(!!nameFile) {
+            fileName = nameFile + '-attachment.' + ext;
         } else {
             fileName = uuid.v4() + '-attachment.' + ext;
         }

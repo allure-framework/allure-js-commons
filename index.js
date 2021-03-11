@@ -79,9 +79,9 @@ Allure.prototype.setDescription = function(description, type) {
     this.getCurrentTest().setDescription(description, type);
 };
 
-Allure.prototype.addAttachment = function(attachmentName, buffer, type, nameId) {
+Allure.prototype.addAttachment = function(attachmentName, buffer, type, nameFile) {
     var info = util.getBufferInfo(buffer, type),
-        name = writer.writeBuffer(this.options.targetDir, buffer, info.ext, nameId),
+        name = writer.writeBuffer(this.options.targetDir, buffer, info.ext, nameFile),
         attachment = new Attachment(attachmentName, name, buffer.length, info.mime),
         currentStep = this.getCurrentSuite().currentStep;
 
