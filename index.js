@@ -1,5 +1,5 @@
 'use strict';
-var assign = require('object-assign'),
+let assign = require('object-assign'),
     Suite = require('./beans/suite'),
     Test = require('./beans/test'),
     Step = require('./beans/step'),
@@ -30,7 +30,7 @@ Allure.prototype.startSuite = function(suiteName, timestamp) {
 };
 
 Allure.prototype.endSuite = function(timestamp) {
-    var suite = this.getCurrentSuite();
+    let suite = this.getCurrentSuite();
     suite.end(timestamp);
     if(suite.hasTests()) {
         writer.writeSuite(this.options.targetDir, suite);
@@ -39,7 +39,7 @@ Allure.prototype.endSuite = function(timestamp) {
 };
 
 Allure.prototype.startCase = function(testName, timestamp) {
-    var test = new Test(testName, timestamp),
+    let test = new Test(testName, timestamp),
         suite = this.getCurrentSuite();
     suite.currentTest = test;
     suite.currentStep = test;
@@ -51,7 +51,7 @@ Allure.prototype.endCase = function(status, err, timestamp) {
 };
 
 Allure.prototype.startStep = function(stepName, timestamp) {
-    var step = new Step(stepName, timestamp),
+    let step = new Step(stepName, timestamp),
         suite = this.getCurrentSuite();
     if (!suite || !suite.currentStep) {
         console.warn('allure-js-commons: Unexpected startStep() of ' + stepName + '. There is no parent step');
@@ -65,7 +65,7 @@ Allure.prototype.startStep = function(stepName, timestamp) {
 };
 
 Allure.prototype.endStep = function(status, timestamp) {
-    var suite = this.getCurrentSuite();
+    let suite = this.getCurrentSuite();
     if (!suite || !(suite.currentStep instanceof Step)) {
         console.warn('allure-js-commons: Unexpected endStep(). There is no running step');
         return;
@@ -80,7 +80,7 @@ Allure.prototype.setDescription = function(description, type) {
 };
 
 Allure.prototype.addAttachment = function(attachmentName, buffer, type) {
-    var info = util.getBufferInfo(buffer, type),
+    let info = util.getBufferInfo(buffer, type),
         name = writer.writeBuffer(this.options.targetDir, buffer, info.ext),
         attachment = new Attachment(attachmentName, name, buffer.length, info.mime),
         currentStep = this.getCurrentSuite().currentStep;
